@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freedom Journey - Shame Coaching App</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e0e7ff);
+            min-height: 100vh;
+            padding: 15px;
+            line-height: 1.6;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #3b82f6;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 8px;
+            display: inline-block;
+            text-decoration: none;
+            transition: all 0.2s;
+            min-width: 200px;
+            text-align: center;
+        }
+        .button:hover { background: #2563eb; transform: translateY(-1px); }
+        .nav-button { background: #10b981; display: block; margin: 15px 0; }
+        .nav-button:hover { background: #059669; }
+        .back-button { background: #6b7280; min-width: auto; }
+        .back-button:hover { background: #4b5563; }
+        .verse-box {
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 6px solid #8b5cf6;
+            margin: 25px 0;
+        }
+        .reflection-box {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+            margin: 25px 0;
+        }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            margin: 15px 0;
+        }
+        textarea:focus { border-color: #3b82f6; outline: none; }
+        .progress-container {
+            background: #f3f4f6;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            transition: width 0.5s ease;
+        }
+        .hidden { display: none; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0; }
+        .shame-box {
+            background: #fef2f2;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ef4444;
+        }
+        .truth-box {
+            background: #f0fdf4;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #22c55e;
+        }
+        .guilt-box {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f59e0b;
+        }
+        .entry {
+            background: #f0f9ff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .armor-step {
+            margin: 20px 0;
+            padding: 20px;
+            background: #dbeafe;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+        .trigger-section {
+            margin: 25px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f9fafb;
+        }
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+            .container { padding: 5px; }
+            .button { min-width: auto; display: block; margin: 10px 0; }
+            .entry-header { flex-direction: column; }
+        }
+        h1 { color: #1f2937; margin-bottom: 15px; font-size: 2.2em; }
+        h2 { color: #1f2937; margin-bottom: 20px; font-size: 1.8em; }
+        h3 { color: #374151; margin-bottom: 15px; font-size: 1.4em; }
+        h4 { color: #374151; margin-bottom: 12px; font-size: 1.2em; }
+        p { margin-bottom: 15px; }
+        ul { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        strong { color: #1f2937; }
+        em { font-style: italic; color: #4b5563; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌟 Freedom Journey 🌟</h1>
+            <p><strong>"Therefore, there is now no condemnation for those who are in Christ Jesus." - Romans 8:1</strong></p>
+            <p>Your safe space to discover who God says you are</p>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard">
+            <div class="verse-box" id="daily-verse">
+                <h3>📖 Today's Verse</h3>
+                <p id="verse-text"></p>
+                <p><strong id="verse-ref"></strong></p>
+                <button class="button" onclick="newVerse()" style="background: #8b5cf6; font-size: 14px; padding: 10px 15px; min-width: auto;">New Verse</button>
+            </div>
+
+            <div class="section">
+                <h2>Your Journey Sections</h2>
+                <button class="button nav-button" onclick="showSection('understand')">🪞 What Is Shame?</button>
+                <button class="button nav-button" onclick="showSection('recognize')">👁️ Spot the Lies</button>
+                <button class="button nav-button" onclick="showSection('respond')">🛡️ Fight Back with Truth</button>
+                <button class="button nav-button" onclick="showSection('journal')">📔 My Growth Journal</button>
+            </div>
+
+            <div class="progress-container">
+                <h3>Your Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p id="progress-text">0/15 activities completed</p>
+            </div>
+        </div>
+
+        <!-- Understanding Section -->
+        <div id="understand" class="hidden">
+            <div class="section fade-in">
+                <button class="button back-button" onclick="showSection('dashboard')">← Back Home</button>
+                <h2>🪞 What Is Shame?</h2>
+                
+                <div class="reflection-box">
+                    <h3>The Mirror Analogy</h3>
+                    <p><strong>Imagine looking in a mirror:</strong></p>
+                    
+                    <div class="grid">
+                        <div class="shame-box">
+                            <strong>Shame says:</strong> "You ARE ugly/stupid/worthless" (attacks who you are)
+                        </div>
+                        <div class="guilt-box">
+                            <strong>Guilt says:</strong> "You DID something wrong" (points to actions)
+                        </div>
+                    </div>
+                    <div class="truth-box">
+                        <strong>Holy Spirit conviction says:</strong> "I love you AND want to help you grow" (leads to freedom)
+                    </div>
+                </div>
+
+                <div class="verse-box">
+                    <h4>📖 What God Says About You</h4>
+                    <p><em>"I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well."</em> - Psalm 139:14</p>
+                    <p><em>"See what great love the Father has lavished on us, that we should be called children of God! And that is what we are!"</em> - 1 John 3:1</p>
+                    <p><em>"For you created my inmost being; you knit me together in my mother's womb."</em> - Psalm 139:13</p>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>Reflection Time</h4>
+                    <p>Think about a time you felt "not good enough." Was shame attacking your identity or was the Holy Spirit lovingly pointing out something to grow in?</p>
+                    <textarea id="understand-reflection" placeholder="Write your thoughts here..."></textarea>
+                    <button class="button" onclick="saveReflection('Understanding shame vs conviction', 'understand-reflection', 'understand-complete')">Save Reflection</button>
+                </div>
+
+                <div class="section">
+                    <h3>Quick Truth Check</h3>
+                    <div class="grid">
+                        <div class="shame-box">
+                            <h4>Shame Lies:</h4>
+                            <ul>
+                                <li>"You're a failure"</li>
+                                <li>"God is disappointed"</li>
+                                <li>"You'll never change"</li>
+                                <li>"Hide from others"</li>
+                            </ul>
+                        </div>
+                        <div class="truth-box">
+                            <h4>Holy Spirit Truth:</h4>
+                            <ul>
+                                <li>"I love you deeply"</li>
+                                <li>"Let's grow together"</li>
+                                <li>"I have good plans for you"</li>
+                                <li>"You're safe with me"</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="button" onclick="markCompleted('truth-check')" id="truth-check-btn">I Understand the Difference</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recognize Section -->
+        <div id="recognize" class="hidden">
+            <div class="section fade-in">
+                <button class="button back-button" onclick="showSection('dashboard')">← Back Home</button>
+                <h2>👁️ Spot the Lies</h2>
+                
+                <div class="reflection-box">
+                    <h3>Common Shame Triggers</h3>
+                    <p>Shame often attacks in these situations. Learn to recognize its voice so you can choose God's voice instead:</p>
+                    
+                    <div class="trigger-section">
+                        <h4>Comparison</h4>
+                        <div class="shame-box">Shame lies: "Everyone else has it together - you're the only mess"</div>
+                        <div class="truth-box">God's truth: "I have plans for YOU specifically" - Jeremiah 29:11</div>
+                    </div>
+
+                    <div class="trigger-section">
+                        <h4>Perfectionism</h4>
+                        <div class="shame-box">Shame lies: "If you're not perfect, you're worthless"</div>
+                        <div class="truth-box">God's truth: "My grace is enough for you" - 2 Corinthians 12:9</div>
+                    </div>
+
+                    <div class="trigger-section">
+                        <h4>People's Opinions</h4>
+                        <div class="shame-box">Shame lies: "If they don't approve, you have no value"</div>
+                        <div class="truth-box">God's truth: "You are chosen and loved by Me" - 1 Peter 2:9</div>
+                    </div>
+
+                    <div class="trigger-section">
+                        <h4>Mistakes & Failure</h4>
+                        <div class="shame-box">Shame lies: "You've ruined everything - God can't use you now"</div>
+                        <div class="truth-box">God's truth: "I work all things together for good" - Romans 8:28</div>
+                    </div>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>My Personal Shame Triggers</h4>
+                    <p>Which triggers hit you the hardest? When do you notice shame trying to speak?</p>
+                    <textarea id="triggers-reflection" placeholder="Be honest - this is between you and God..."></textarea>
+                    <button class="button" onclick="saveReflection('My shame triggers', 'triggers-reflection', 'triggers-complete')">Save My Triggers</button>
+                </div>
+
+                <div class="verse-box">
+                    <h3>Quick Test: Whose Voice Is Speaking?</h3>
+                    <div class="grid">
+                        <div class="shame-box">
+                            <h4>Shame's Voice:</h4>
+                            <ul>
+                                <li>Harsh and condemning</li>
+                                <li>"You always..." or "You never..."</li>
+                                <li>Brings hopelessness</li>
+                                <li>Makes you want to hide</li>
+                            </ul>
+                        </div>
+                        <div class="truth-box">
+                            <h4>God's Voice:</h4>
+                            <ul>
+                                <li>Gentle but firm</li>
+                                <li>Specific and loving</li>
+                                <li>Brings hope for change</li>
+                                <li>Draws you closer to Him</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p><strong>Remember:</strong> If the voice makes you feel hopeless or worthless - that's shame (not God). If it leads you toward hope and growth - that's the Holy Spirit.</p>
+                    <button class="button" onclick="markCompleted('recognize-voice')" id="recognize-voice-btn">I Can Tell the Difference</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Respond Section -->
+        <div id="respond" class="hidden">
+            <div class="section fade-in">
+                <button class="button back-button" onclick="showSection('dashboard')">← Back Home</button>
+                <h2>🛡️ Fight Back with Truth</h2>
+                
+                <div class="reflection-box">
+                    <h3>The ARMOR Strategy</h3>
+                    <p>When shame attacks, put on God's armor with this strategy:</p>
+                    
+                    <div class="armor-step">
+                        <strong>A - Acknowledge:</strong> Notice shame is speaking - don't ignore it<br>
+                        <em>"Search me, God, and know my heart; test me and know my anxious thoughts." - Psalm 139:23</em>
+                    </div>
+                    <div class="armor-step">
+                        <strong>R - Reject the lie:</strong> Say "That's not from God" out loud<br>
+                        <em>"We demolish arguments and every pretension that sets itself up against the knowledge of God." - 2 Corinthians 10:5</em>
+                    </div>
+                    <div class="armor-step">
+                        <strong>M - Memorize truth:</strong> Speak God's Word over yourself<br>
+                        <em>"I have hidden your word in my heart that I might not sin against you." - Psalm 119:11</em>
+                    </div>
+                    <div class="armor-step">
+                        <strong>O - Open up:</strong> Tell a trusted person what you're feeling<br>
+                        <em>"Therefore confess your sins to each other and pray for each other so that you may be healed." - James 5:16</em>
+                    </div>
+                    <div class="armor-step">
+                        <strong>R - Remember who you are:</strong> List truths about your identity in Christ<br>
+                        <em>"See what great love the Father has lavished on us, that we should be called children of God!" - 1 John 3:1</em>
+                    </div>
+                    
+                    <button class="button" onclick="markCompleted('armor-strategy')" id="armor-strategy-btn">I Know How to Use ARMOR</button>
+                </div>
+
+                <div class="verse-box">
+                    <h3>Truth Declarations</h3>
+                    <p>Keep these verses close. When shame speaks, declare these truths out loud:</p>
+                    
+                    <h4>When you feel worthless:</h4>
+                    <ul>
+                        <li><em>"I praise you because I am fearfully and wonderfully made"</em> - Psalm 139:14</li>
+                        <li><em>"See what great love the Father has lavished on us, that we should be called children of God!"</em> - 1 John 3:1</li>
+                    </ul>
+
+                    <h4>When you feel unforgiven:</h4>
+                    <ul>
+                        <li><em>"If we confess our sins, he is faithful and just and will forgive us our sins"</em> - 1 John 1:9</li>
+                        <li><em>"Therefore, there is now no condemnation for those who are in Christ Jesus"</em> - Romans 8:1</li>
+                        <li><em>"As far as the east is from the west, so far has he removed our transgressions from us"</em> - Psalm 103:12</li>
+                    </ul>
+
+                    <h4>When you feel unloved:</h4>
+                    <ul>
+                        <li><em>"But God demonstrates his own love for us in this: While we were still sinners, Christ died for us"</em> - Romans 5:8</li>
+                        <li><em>"Neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God"</em> - Romans 8:39</li>
+                    </ul>
+
+                    <h4>When you feel hopeless:</h4>
+                    <ul>
+                        <li><em>"For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you"</em> - Jeremiah 29:11</li>
+                        <li><em>"And we know that in all things God works for the good of those who love him"</em> - Romans 8:28</li>
+                        <li><em>"My grace is sufficient for you, for my power is made perfect in weakness"</em> - 2 Corinthians 12:9</li>
+                    </ul>
+                </div>
+
+                <div class="verse-box">
+                    <h3>Emergency Truth Kit</h3>
+                    <p>For those really hard moments, memorize these truths:</p>
+                    <ul>
+                        <li>I am loved unconditionally by God (Romans 8:38-39)</li>
+                        <li>I am chosen and precious to Him (1 Peter 2:9)</li>
+                        <li>Nothing I do can separate me from His love (Romans 8:35)</li>
+                        <li>He has good plans for my life (Jeremiah 29:11)</li>
+                        <li>His grace is sufficient for me (2 Corinthians 12:9)</li>
+                        <li>I am being transformed into His likeness (2 Corinthians 3:18)</li>
+                        <li>He will complete the good work He started in me (Philippians 1:6)</li>
+                    </ul>
+                    <button class="button" onclick="markCompleted('emergency-kit')" id="emergency-kit-btn">I Have My Emergency Truths</button>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>Practice Time</h4>
+                    <p>Write out a recent shame lie you've believed, then counter it with a specific Bible verse:</p>
+                    <textarea id="truth-practice" placeholder="Shame said: _______ But God says: _______ (include the Bible verse)"></textarea>
+                    <button class="button" onclick="saveReflection('Fighting shame with truth', 'truth-practice', 'truth-complete')">Save My Truth Declaration</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journal Section -->
+        <div id="journal" class="hidden">
+            <div class="section fade-in">
+                <button class="button back-button" onclick="showSection('dashboard')">← Back Home</button>
+                <h2>📔 My Growth Journal</h2>
+                
+                <div class="section">
+                    <h3>My Journey Reflections</h3>
+                    <div id="reflection-entries">
+                        <p style="text-align: center; color: #6b7280; padding: 40px;">
+                            Your reflections will appear here as you complete activities. This is your personal space to see how God is growing you!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reflection-box">
+                    <h3>Daily Heart Check</h3>
+                    <p>How is your heart today? What is God teaching you?</p>
+                    <textarea id="daily-checkin" placeholder="Be real with God about your feelings, struggles, and what you're learning..."></textarea>
+                    <button class="button" onclick="saveReflection('Daily heart check', 'daily-checkin', 'checkin-complete')">Save Today's Check-in</button>
+                </div>
+
+                <div class="reflection-box">
+                    <h3>God's Faithfulness Tracker</h3>
+                    <p>How did you see God's love or faithfulness today?</p>
+                    <textarea id="faithfulness" placeholder="Maybe He helped you through a hard moment, reminded you of His love, or showed you His grace..."></textarea>
+                    <button class="button" onclick="saveReflection('Gods faithfulness today', 'faithfulness', 'faithfulness-complete')">Record God's Faithfulness</button>
+                </div>
+
+                <div class="grid">
+                    <div style="background: #eff6ff; padding: 25px; border-radius: 12px; border-left: 4px solid #3b82f6;">
+                        <h4>🙏 Prayer Requests</h4>
+                        <textarea id="prayers" placeholder="What do you want to pray about? Share your heart with God..."></textarea>
+                        <button class="button" onclick="saveReflection('Prayer requests', 'prayers', 'prayer-complete')">Save Prayer</button>
+                    </div>
+                    
+                    <div style="background: #f0fdf4; padding: 25px; border-radius: 12px; border-left: 4px solid #22c55e;">
+                        <h4>🎵 Praise & Gratitude</h4>
+                        <textarea id="gratitude" placeholder="What are you thankful for? How has God been good to you?"></textarea>
+                        <button class="button" onclick="saveReflection('Praise and gratitude', 'gratitude', 'gratitude-complete')">Save Praise</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="verse-box" style="text-align: center; margin-top: 40px;">
+            <p><strong>"The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing."</strong></p>
+            <p><strong>- Zephaniah 3:17</strong></p>
+            <p style="margin-top: 20px;">You are loved. You are chosen. You are free. 💜</p>
+        </div>
+    </div>
+
+    <script>
+        // App state
+        let completedActivities = [];
+        let reflectionEntries = [];
+        
+        // Daily verses
+        const verses = [
+            {text: "I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well.", ref: "Psalm 139:14"},
+            {text: "See what great love the Father has lavished on us, that we should be called children of God! And that is what we are!", ref: "1 John 3:1"},
+            {text: "If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness.", ref: "1 John 1:9"},
+            {text: "Therefore, there is now no condemnation for those who are in Christ Jesus.", ref: "Romans 8:1"},
+            {text: "But God demonstrates his own love for us in this: While we were still sinners, Christ died for us.", ref: "Romans 5:8"},
+            {text: "And we know that in all things God works for the good of those who love him, who have been called according to his purpose.", ref: "Romans 8:28"},
+            {text: "For I am confident of this, that he who began a good work in you will carry it on to completion until the day of Christ Jesus.", ref: "Philippians 1:6"},
+            {text: "My grace is sufficient for you, for my power is made perfect in weakness.", ref: "2 Corinthians 12:9"},
+            {text: "The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing.", ref: "Zephaniah 3:17"},
+            {text: "Cast all your anxiety on him because he cares for you.", ref: "1 Peter 5:7"},
+            {text: "For you created my inmost being; you knit me together in my mother's womb.", ref: "Psalm 139:13"},
+            {text: "As far as the east is from the west, so far has he removed our transgressions from us.", ref: "Psalm 103:12"}
+        ];
+
+        // Load data from localStorage
+        function loadData() {
+            try {
+                completedActivities = JSON.parse(localStorage.getItem('freedomJourney_completed') || '[]');
+                reflectionEntries = JSON.parse(localStorage.getItem('freedomJourney_reflections') || '[]');
+            } catch (e) {
+                completedActivities = [];
+                reflectionEntries = [];
+            }
+        }
+        
+        // Save data to localStorage
+        function saveData() {
+            try {
+                localStorage.setItem('freedomJourney_completed', JSON.stringify(completedActivities));
+                localStorage.setItem('freedomJourney_reflections', JSON.stringify(reflectionEntries));
+            } catch (e) {
+                console.log('Could not save data');
+            }
+        }
+
+        // Initialize app
+        function init() {
+            loadData();
+            setDailyVerse();
+            updateProgress();
+            displayReflections();
+            updateCompletedButtons();
+        }
+
+        function setDailyVerse() {
+            const today = new Date().toDateString();
+            let savedDate = '';
+            let dailyVerse = verses[0];
+            
+            try {
+                savedDate = localStorage.getItem('freedomJourney_verseDate') || '';
+                dailyVerse = JSON.parse(localStorage.getItem('freedomJourney_verse') || JSON.stringify(verses[0]));
+            } catch (e) {
+                dailyVerse = verses[0];
+            }
+            
+            if (savedDate !== today) {
+                dailyVerse = verses[Math.floor(Math.random() * verses.length)];
+                try {
+                    localStorage.setItem('freedomJourney_verse', JSON.stringify(dailyVerse));
+                    localStorage.setItem('freedomJourney_verseDate', today);
+                } catch (e) {
+                    console.log('Could not save verse');
+                }
+            }
+            
+            document.getElementById('verse-text').textContent = '"' + dailyVerse.text + '"';
+            document.getElementById('verse-ref').textContent = '- ' + dailyVerse.ref;
+        }
+
+        function newVerse() {
+            const randomVerse = verses[Math.floor(Math.random() * verses.length)];
+            document.getElementById('verse-text').textContent = '"' + randomVerse.text + '"';
+            document.getElementById('verse-ref').textContent = '- ' + randomVerse.ref;
+            
+            try {
+                localStorage.setItem('freedomJourney_verse', JSON.stringify(randomVerse));
+            } catch (e) {
+                console.log('Could not save verse');
+            }
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = ['dashboard', 'understand', 'recognize', 'respond', 'journal'];
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) element.classList.add('hidden');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionName);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+                
+                // Update journal display if needed
+                if (sectionName === 'journal') {
+                    displayReflections();
+                }
+            }
+        }
+
+        function markCompleted(activityId) {
+            if (!completedActivities.includes(activityId)) {
+                completedActivities.push(activityId);
+                saveData();
+                updateProgress();
+                updateCompletedButtons();
+                
+                // Visual feedback
+                const button = event.target;
+                if (button) {
+                    button.style.background = '#10b981';
+                    button.textContent = button.textContent.replace(' ✓', '') + ' ✓';
+                }
+                
+                // Show encouragement
+                alert('Great job! You completed an activity! 🌟');
+            }
+        }
+
+        function updateCompletedButtons() {
+            const buttons = [
+                { id: 'truth-check-btn', activity: 'truth-check', text: 'I Understand the Difference' },
+                { id: 'recognize-voice-btn', activity: 'recognize-voice', text: 'I Can Tell the Difference' },
+                { id: 'armor-strategy-btn', activity: 'armor-strategy', text: 'I Know How to Use ARMOR' },
+                { id: 'emergency-kit-btn', activity: 'emergency-kit', text: 'I Have My Emergency Truths' }
+            ];
+            
+            buttons.forEach(btn => {
+                const button = document.getElementById(btn.id);
+                if (button && completedActivities.includes(btn.activity)) {
+                    button.style.background = '#10b981';
+                    button.textContent = btn.text + ' ✓';
+                }
+            });
+        }
+
+        function saveReflection(prompt, textareaId, activityId) {
+            const textarea = document.getElementById(textareaId);
+            if (!textarea) return;
+            
+            const response = textarea.value.trim();
+            
+            if (response) {
+                const entry = {
+                    id: Date.now(),
+                    prompt: prompt,
+                    response: response,
+                    date: new Date().toLocaleDateString()
+                };
+                
+                reflectionEntries.push(entry);
+                saveData();
+                textarea.value = '';
+                
+                if (activityId && !completedActivities.includes(activityId)) {
+                    markCompleted(activityId);
+                }
+                
+                displayReflections();
+                
+                // Visual feedback
+                alert('Reflection saved! Your thoughts are precious to God. 💜');
+            } else {
+                alert('Please write something before saving 😊');
+            }
+        }
+
+        function updateProgress() {
+            const total = 15;
+            const completed = completedActivities.length;
+            const percentage = Math.min((completed / total) * 100, 100);
+            
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            
+            if (progressFill) progressFill.style.width = percentage + '%';
+            if (progressText) progressText.textContent = completed + '/' + total + ' activities completed';
+            
+            // Celebration for milestones
+            if (completed === 5) {
+                setTimeout(() => alert('🎉 Amazing! You\'ve completed 5 activities! Keep growing!'), 500);
+            } else if (completed === 10) {
+                setTimeout(() => alert('🌟 Fantastic! 10 activities done! You\'re doing great!'), 500);
+            } else if (completed === 15) {
+                setTimeout(() => alert('🏆 Incredible! You\'ve completed your Freedom Journey! God is so proud of your growth!'), 500);
+            }
+        }
+
+        function displayReflections() {
+            const container = document.getElementById('reflection-entries');
+            if (!container) return;
+            
+            if (reflectionEntries.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">Your reflections will appear here as you complete activities. This is your personal space to see how God is growing you!</p>';
+                return;
+            }
+            
+            container.innerHTML = reflectionEntries.slice().reverse().map(entry => `
+                <div class="entry">
+                    <div class="entry-header">
+                        <strong>${entry.prompt}</strong>
+                        <small style="color: #6b7280;">${entry.date}</small>
+                    </div>
+                    <p style="white-space: pre-wrap; margin: 0; line-height: 1.5;">${entry.response}</p>
+                </div>
+            `).join('');
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+        
+        // Also initialize immediately in case DOMContentLoaded already fired
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
